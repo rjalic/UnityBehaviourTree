@@ -48,9 +48,9 @@ public class EnemyAI : MonoBehaviour
         currentHealth += Time.deltaTime * healthRestorationRate;
     }
 
-    private void OnMouseDown()
+    public void TakeDamage(float damage)
     {
-        currentHealth -= 10f;
+        currentHealth -= damage;
     }
 
     private void ConstructBehaviourTree()
