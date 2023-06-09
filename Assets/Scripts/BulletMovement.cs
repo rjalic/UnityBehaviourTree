@@ -4,31 +4,31 @@ public class BulletMovement : MonoBehaviour
 {
     [SerializeField] private float speed = 10f;
     [SerializeField] private float damage = 10f;
-    private Vector3 target;
-    private PlayerMovement player;
+    private Vector3 _target;
+    private GameObject _shooter;
 
-    public void SetTarget(Vector3 tar)
+    public void SetTarget(Vector3 target)
     {
-        this.target = tar;
+        _target = target;
     }
 
-    public void SetPlayer(PlayerMovement player)
+    public void SetPlayer(GameObject shooter)
     {
-        this.player = player;
+        _shooter = shooter;
     }
 
     private void Update()
     {
-        transform.position += Time.deltaTime * speed * target;
+        transform.position += Time.deltaTime * speed * _target;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject == player.gameObject)
+        if (collision.gameObject == _shooter)
         {
             return;
         }
-        EnemyAI enemy = collision.gameObject.GetComponent<EnemyAI>();
+        var enemy = collision.gameObject.GetComponent<EnemyAI>();
         if (enemy != null)
         {
             enemy.TakeDamage(damage);

@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
                 GameObject bullet = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
                 BulletMovement bulletController = bullet.GetComponent<BulletMovement>();
                 Vector3 shootDirection = (targetPosition - transform.position).normalized;
-                bulletController.SetPlayer(this);
+                bulletController.SetPlayer(this.gameObject);
                 bulletController.SetTarget(shootDirection);
             }
             fireCooldownLeft = fireCooldown;
