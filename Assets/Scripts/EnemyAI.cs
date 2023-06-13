@@ -11,18 +11,17 @@ public class EnemyAI : MonoBehaviour
     [SerializeField] private float shootingRange;
     [SerializeField] private Transform playerTransform;
     [SerializeField] private Cover[] availableCovers;
+
     private NavMeshAgent _agent;
-
-    private Material _material;
-    private Transform bestCoverSpot;
-
-    private Node topNode;
-
+    private Transform _bestCoverSpot;
     private float _currentHealth;
-    public float currentHealth
+    private Material _material;
+    private Node _topNode;
+
+    public float CurrentHealth
     {
         get => _currentHealth;
-        set => _currentHealth = Mathf.Clamp(value, 0, startingHealth);
+        private set => _currentHealth = Mathf.Clamp(value, 0, _currentHealth);
     }
 
     private void Awake()
@@ -39,18 +38,19 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
-        topNode.Evaluate();
-        if (topNode.nodeState == NodeState.Failure)
+        _topNode.Evaluate();
+        if (_topNode.NodeState == NodeState.Failure)
         {
             SetColor(Color.red);
             _agent.isStopped = true;
         }
-        currentHealth += Time.deltaTime * healthRestorationRate;
+
+        _currentHealth += Time.deltaTime * healthRestorationRate;
     }
 
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
+        _currentHealth -= damage;
     }
 
     private void ConstructBehaviourTree()
@@ -70,7 +70,7 @@ public class EnemyAI : MonoBehaviour
         var findCoverSelector = new Selector(new List<Node> { goToCoverSequence, chaseSequence });
         var tryToTakeCoverSelector = new Selector(new List<Node> { isCoveredNode, findCoverSelector });
         var mainCoverSequence = new Sequence(new List<Node> { healthNode, tryToTakeCoverSelector });
-        topNode = new Selector(new List<Node> { mainCoverSequence, shootSequence, chaseSequence });
+        _topNode = new Selector(new List<Node> { mainCoverSequence, shootSequence, chaseSequence });
     }
 
     public void SetColor(Color color)
@@ -80,11 +80,11 @@ public class EnemyAI : MonoBehaviour
 
     public void SetBestCoverSpot(Transform bestCoverSpot)
     {
-        this.bestCoverSpot = bestCoverSpot;
+        _bestCoverSpot = bestCoverSpot;
     }
 
     public Transform GetBestCoverSpot()
     {
-        return bestCoverSpot;
+        return _bestCoverSpot;
     }
 }

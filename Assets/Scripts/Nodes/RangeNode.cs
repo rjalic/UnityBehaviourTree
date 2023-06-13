@@ -2,20 +2,20 @@ using UnityEngine;
 
 public class RangeNode : Node
 {
-    private float range;
-    private Transform target;
-    private Transform origin;
+    private readonly Transform _origin;
+    private readonly float _range;
+    private readonly Transform _target;
 
     public RangeNode(float range, Transform target, Transform origin)
     {
-        this.range = range;
-        this.target = target;
-        this.origin = origin;
+        _range = range;
+        _target = target;
+        _origin = origin;
     }
 
     public override NodeState Evaluate()
     {
-        float distance = Vector3.Distance(target.position, origin.position);
-        return distance <= range ? NodeState.Success : NodeState.Failure;
+        var distance = Vector3.Distance(_target.position, _origin.position);
+        return distance <= _range ? NodeState.Success : NodeState.Failure;
     }
 }

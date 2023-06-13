@@ -3,31 +3,29 @@ using UnityEngine.AI;
 
 public class GoToCoverNode : Node
 {
-    private NavMeshAgent agent;
-    private EnemyAI ai;
+    private readonly NavMeshAgent _agent;
+    private readonly EnemyAI _ai;
 
     public GoToCoverNode(NavMeshAgent agent, EnemyAI ai)
     {
-        this.agent = agent;
-        this.ai = ai;
+        _agent = agent;
+        _ai = ai;
     }
 
     public override NodeState Evaluate()
     {
-        Transform coverSpot = ai.GetBestCoverSpot();
-        if (coverSpot == null)
-        {
-            return NodeState.Failure;
-        }
-        ai.SetColor(Color.magenta);
-        float distance = Vector3.Distance(coverSpot.position, agent.transform.position);
+        var coverSpot = _ai.GetBestCoverSpot();
+        if (coverSpot == null) return NodeState.Failure;
+        _ai.SetColor(Color.magenta);
+        var distance = Vector3.Distance(coverSpot.position, _agent.transform.position);
         if (distance > 0.2f)
         {
-            agent.isStopped = false;
-            agent.SetDestination(coverSpot.position);
+            _agent.isStopped = false;
+            _agent.SetDestination(coverSpot.position);
             return NodeState.Running;
         }
-        agent.isStopped = true;
+
+        _agent.isStopped = true;
         return NodeState.Success;
     }
 }

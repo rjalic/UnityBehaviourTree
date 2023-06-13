@@ -3,28 +3,29 @@ using UnityEngine.AI;
 
 public class ChaseNode : Node
 {
-    private Transform target;
-    private NavMeshAgent agent;
-    private EnemyAI ai;
+    private readonly NavMeshAgent _agent;
+    private readonly EnemyAI _ai;
+    private readonly Transform _target;
 
     public ChaseNode(Transform target, NavMeshAgent agent, EnemyAI ai)
     {
-        this.target = target;
-        this.agent = agent;
-        this.ai = ai;
+        _target = target;
+        _agent = agent;
+        _ai = ai;
     }
 
     public override NodeState Evaluate()
     {
-        ai.SetColor(Color.yellow);
-        float distance = Vector3.Distance(target.position, agent.transform.position);
+        _ai.SetColor(Color.yellow);
+        var distance = Vector3.Distance(_target.position, _agent.transform.position);
         if (distance > 0.2f)
         {
-            agent.isStopped = false;
-            agent.SetDestination(target.position);
+            _agent.isStopped = false;
+            _agent.SetDestination(_target.position);
             return NodeState.Running;
         }
-        agent.isStopped = true;
+
+        _agent.isStopped = true;
         return NodeState.Success;
     }
 }

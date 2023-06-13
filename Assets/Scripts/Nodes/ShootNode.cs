@@ -3,19 +3,19 @@ using UnityEngine.AI;
 
 public class ShootNode : Node
 {
-    private NavMeshAgent agent;
-    private EnemyAI ai;
+    private readonly NavMeshAgent _agent;
+    private readonly EnemyAI _ai;
 
     public ShootNode(NavMeshAgent agent, EnemyAI ai)
     {
-        this.agent = agent;
-        this.ai = ai;
+        _agent = agent;
+        _ai = ai;
     }
 
     public override NodeState Evaluate()
     {
-        agent.isStopped = true;
-        ai.SetColor(Color.green);
+        _agent.isStopped = true;
+        _ai.SetColor(Color.green);
         return NodeState.Running;
     }
 }

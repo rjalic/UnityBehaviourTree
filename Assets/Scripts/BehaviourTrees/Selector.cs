@@ -2,17 +2,16 @@ using System.Collections.Generic;
 
 public class Selector : Node
 {
-    protected List<Node> nodes = new();
+    private List<Node> _nodes;
 
     public Selector(List<Node> nodes)
     {
-        this.nodes = nodes;
+        _nodes = nodes;
     }
 
     public override NodeState Evaluate()
     {
-        foreach (var node in nodes)
-        {
+        foreach (var node in _nodes)
             switch (node.Evaluate())
             {
                 case NodeState.Running:
@@ -24,7 +23,6 @@ public class Selector : Node
                 case NodeState.Failure:
                     break;
             }
-        }
 
         _nodeState = NodeState.Failure;
         return _nodeState;
